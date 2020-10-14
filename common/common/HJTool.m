@@ -87,7 +87,12 @@
 }
 
 - (void)setAlertController:(NSString *)message {
-    UIViewController *topRootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *topRootViewController;
+    if (@available(iOS 13.0, *)) {
+        topRootViewController = [UIApplication sharedApplication].windows[0].rootViewController;
+    } else {
+        topRootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    }
     while (topRootViewController.presentedViewController) {
         topRootViewController = topRootViewController.presentedViewController;
     }
@@ -293,7 +298,12 @@
 }
 
 - (UIViewController *)currentVc {
-    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *rootViewController;
+    if (@available(iOS 13.0, *)) {
+        rootViewController = [UIApplication sharedApplication].windows[0].rootViewController;
+    } else {
+        rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    }
     UIViewController *currentVC = [UIWindow getVisibleViewControllerFrom:rootViewController];
     return currentVC;
 }

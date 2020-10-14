@@ -15,7 +15,7 @@
 #import "HJWebVC.h"
 #import "BaseNavigationController.h"
 
-@interface WKWebVC ()<UIWebViewDelegate,UIActionSheetDelegate,WKNavigationDelegate, WKUIDelegate>
+@interface WKWebVC ()<UIActionSheetDelegate,WKNavigationDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (strong, nonatomic) WKWebView *wkWebView;
@@ -219,22 +219,6 @@
         }
         [self.progressView setProgress:newP animated:YES];
     }
-}
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    self.loadCount ++;
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    self.loadCount --;
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    self.loadCount --;
-}
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    return YES;
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
