@@ -7,6 +7,7 @@
 //
 
 #import "NSDate+SGTimeHandle.h"
+#import "NSString+Tool.h"
 
 @implementation NSDate (SGTimeHandle)
 
@@ -46,7 +47,7 @@
         array = [string componentsSeparatedByString:@" "];
         
         if ([lastString compare:array[0]] == 0) {
-            return [NSString stringWithFormat:@"%@ %@",Localized(@"yesterday"), [array[1] substringToIndex:5]];
+            return [NSString stringWithFormat:@"昨天 %@",[array[1] substringToIndex:5]];
         } else if ([lastString compare:array[0]] == -1) {
             // HH:mm
             return [array[1] substringToIndex:5];
@@ -305,7 +306,7 @@
         }
     }
     
-    STLog(@"dateArr = %@", dateArr);
+    NSLog(@"dateArr = %@", dateArr);
     return dateArr;
 }
 
@@ -387,7 +388,7 @@
         }
     }
     
-    STLog(@"dateArr = %@", dateArr);
+    NSLog(@"dateArr = %@", dateArr);
     return dateArr;
 
 }

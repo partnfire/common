@@ -376,9 +376,7 @@ static CGFloat DefaultHeight = 40;
 }
 
 #pragma mark - Overridden getters
-
-- (UIFont *)labelFont
-{
+- (UIFont *)labelFont {
     if (_labelFont) {
         return _labelFont;
     } else {
@@ -388,8 +386,7 @@ static CGFloat DefaultHeight = 40;
     }
 }
 
-- (CGFloat)cornerRadius
-{
+- (CGFloat)cornerRadius {
     if (_cornerRadius) {
         return _cornerRadius;
     } else {
@@ -398,9 +395,7 @@ static CGFloat DefaultHeight = 40;
 }
 
 #pragma mark - Overridden setters
-
-- (void)setSelectionViewColor:(UIColor *)selectionViewColor
-{
+- (void)setSelectionViewColor:(UIColor *)selectionViewColor {
     _selectionViewColor = selectionViewColor;
     
     if (self.selectionView) {
@@ -409,8 +404,7 @@ static CGFloat DefaultHeight = 40;
     }
 }
 
-- (void)setSelectionBackgroundColor:(UIColor *)selectionBackgroundColor
-{
+- (void)setSelectionBackgroundColor:(UIColor *)selectionBackgroundColor {
     _selectionBackgroundColor = selectionBackgroundColor;
     
     if (self.selectionBackgroundView) {
@@ -418,8 +412,7 @@ static CGFloat DefaultHeight = 40;
     }
 }
 
-- (void)setSelectedSegmentIndex:(NSInteger)selectedSegmentIndex
-{
+- (void)setSelectedSegmentIndex:(NSInteger)selectedSegmentIndex {
     if (_selectedSegmentIndex != selectedSegmentIndex) {
         _selectedSegmentIndex = selectedSegmentIndex;
         if (!self.touchesInProgress) {
@@ -429,9 +422,7 @@ static CGFloat DefaultHeight = 40;
 }
 
 #pragma mark - Animation helpers
-
-- (void)animateSelectionViewUpIfNeeded:(BOOL)shorten
-{
+- (void)animateSelectionViewUpIfNeeded:(BOOL)shorten {
     if (self.touchesInProgress) {
         CGFloat scaleYPercentage = (SelectionViewPadding * 2) / (CGRectGetHeight(self.frame) - (SelectionViewPadding * 2));
         scaleYPercentage += 1;
@@ -457,9 +448,7 @@ static CGFloat DefaultHeight = 40;
 }
 
 #pragma mark - Touch handling
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
     self.touchesInProgress = YES;
     self.valueAtStartOfTouches = self.selectedSegmentIndex;
@@ -489,8 +478,7 @@ static CGFloat DefaultHeight = 40;
     }
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesMoved:touches withEvent:event];
     
     UITouch *touch = [touches anyObject];
@@ -516,14 +504,12 @@ static CGFloat DefaultHeight = 40;
     [self setSelectedSegmentIndex:roundedSection animated:NO];
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesEnded:touches withEvent:event];
     [self touchesEndedOrCancelled];
 }
 
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesCancelled:touches withEvent:event];
     
     //Reset the selected segment index to what it was initially.
@@ -532,8 +518,7 @@ static CGFloat DefaultHeight = 40;
     [self touchesEndedOrCancelled];
 }
 
-- (void)touchesEndedOrCancelled
-{
+- (void)touchesEndedOrCancelled {
     self.touchesInProgress = NO;
     
     //If the value has changed, send that action.
@@ -554,9 +539,7 @@ static CGFloat DefaultHeight = 40;
 }
 
 #pragma mark - Animation movements
-
-- (void)snapToCurrentSection:(BOOL)isEmbiggened;
-{
+- (void)snapToCurrentSection:(BOOL)isEmbiggened {
     CGFloat fullMove = self.selectedSegmentIndex * [self pointsPerSection];
     
     if (!isEmbiggened) {
@@ -567,8 +550,7 @@ static CGFloat DefaultHeight = 40;
     [self layoutIfNeeded];
 }
 
-- (void)setSelectedSegmentIndex:(NSInteger)selectedSegmentIndex animated:(BOOL)animated
-{
+- (void)setSelectedSegmentIndex:(NSInteger)selectedSegmentIndex animated:(BOOL)animated {
     NSInteger previousSelectedSegmentIndex = _selectedSegmentIndex;
     if (!animated) {
         self.selectedSegmentIndex = selectedSegmentIndex;
@@ -580,9 +562,9 @@ static CGFloat DefaultHeight = 40;
                     label.textColor = self.choiceColor;
                 } else if ([currentView isKindOfClass:[UIImageView class]]) {
                     if (self.selectedSegmentIndex == 0) {
-                        self.selectionBackgroundView.backgroundColor = STRGB16Color(0x52b6ea);
+                        self.selectionBackgroundView.backgroundColor = [UIColor redColor];
                     }else {
-                        self.selectionBackgroundView.backgroundColor = STRGB16Color(0xff85ad);
+                        self.selectionBackgroundView.backgroundColor = [UIColor redColor];
                     }
                 }
                 currentView.alpha = SelectedAlpha;
@@ -591,7 +573,7 @@ static CGFloat DefaultHeight = 40;
                     UILabel *label = (UILabel *)currentView;
                     label.textColor = self.notChoiceLabelColor;
                 }else if ([currentView isKindOfClass:[UIImageView class]]) {
-                    self.selectionBackgroundView.backgroundColor = STRGB16Color(0x52b6ea);
+                    self.selectionBackgroundView.backgroundColor = [UIColor redColor];
                 }
                 currentView.alpha = DeselectedAlpha;
             }

@@ -52,7 +52,7 @@
 
 - (void)loadUI {
     //scrollview
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - (44 + kStatusBarHeight))];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - (44 + 22))];
     scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 100);
     scrollView.showsVerticalScrollIndicator = YES;
     self.scrollView.backgroundColor = [UIColor redColor];
@@ -60,8 +60,8 @@
     self.scrollView = scrollView;
     
     // 进度条
-    UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0.1, kScreenSizeWidth, 2)];
-    progressView.tintColor = MainStyleColor;
+    UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0.1, self.view.frame.size.width, 2)];
+    progressView.tintColor = [UIColor orangeColor];
     progressView.trackTintColor = [UIColor whiteColor];
     [self.scrollView addSubview:progressView];
     self.progressView = progressView;
@@ -74,7 +74,7 @@
     WKWebViewConfiguration *conf = [[WKWebViewConfiguration alloc] init];
     [conf setPreferences:pref];
     
-    WKWebView *wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 2.1, kScreenSizeWidth, CGRectGetHeight(scrollView.frame) - 2.1) configuration:conf];
+    WKWebView *wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 2.1, self.view.frame.size.width, CGRectGetHeight(scrollView.frame) - 2.1) configuration:conf];
     wkWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     wkWebView.backgroundColor = [UIColor whiteColor];
     wkWebView.navigationDelegate = self;
@@ -179,7 +179,7 @@
     [webView evaluateJavaScript:@"document.body.scrollHeight;" completionHandler:^(id result, NSError * error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             CGFloat documentHeight = [result floatValue];
-            weakself.scrollView.contentSize  = CGSizeMake(weakself.view.frame.size.width, documentHeight + (44 + kStatusBarHeight));
+            weakself.scrollView.contentSize  = CGSizeMake(weakself.view.frame.size.width, documentHeight + (44 + 22));
             weakself.wkWebView.frame = CGRectMake(weakself.view.bounds.origin.x, weakself.view.bounds.origin.y, weakself.view.bounds.size.width, documentHeight);
         });
     }];

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 typedef void(^netStateBlock)(NSString *netState);
 
@@ -30,8 +31,6 @@ typedef void(^netStateBlock)(NSString *netState);
 @property (nonatomic, strong) NSString *trackViewUrl;
 
 - (void)checkVersionForUpdate;
-
-- (void)displayVersionUpdateBox;
 
 - (NSString *)validJSONString:(NSString *)json;
 

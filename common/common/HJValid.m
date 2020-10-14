@@ -129,7 +129,7 @@
                          digest[10], digest[11],
                          digest[12], digest[13],
                          digest[14], digest[15]];
-    STLog(@"生成的文件MD5为:%@",fileMD5);
+    NSLog(@"生成的文件MD5为:%@",fileMD5);
     return fileMD5;
 }
 

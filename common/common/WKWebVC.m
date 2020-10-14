@@ -12,13 +12,10 @@
 #import "WebViewJavascriptBridge.h"
 #import "WKWebViewJavascriptBridge.h"
 #import "UIImage+ChangeSize.h"
-#import "BLEService_V2.h"
-#import "WorkingStateVC.h"
-#import "WorkingVC.h"
-#import "BluetoothUtil.h"
 #import "HJWebVC.h"
+#import "BaseNavigationController.h"
 
-@interface WKWebVC ()<UIWebViewDelegate,UIActionSheetDelegate,WKNavigationDelegate, WorkingStateDelegate, WKUIDelegate>
+@interface WKWebVC ()<UIWebViewDelegate,UIActionSheetDelegate,WKNavigationDelegate, WKUIDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (strong, nonatomic) WKWebView *wkWebView;
@@ -81,104 +78,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bleDidDisConnect:) name:BLEUtilDisConnectNotification object:nil];
     [self loadUI]; //加载ui
-    [self videoPlayerFinishedToShowStatusBar];
-}
-
-- (void)videoPlayerFinishedToShowStatusBar {
-    if (@available(iOS 12.0, *)) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoDidRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(videoDidRotate) name:UIWindowDidBecomeHiddenNotification object:nil];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(beginFullScreen:) name:UIWindowDidBecomeVisibleNotification object:nil];
-    }
-}
-
-- (BOOL)prefersStatusBarHidden {
-    return UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-}
-
-- (void)videoDidRotate {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self setNeedsStatusBarAppearanceUpdate];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-        self.navigationController.navigationBar.frame = CGRectMake(0, kStatusBarHeight, kScreenSizeWidth, 44);//矫正导航栏移位
-    });
-}
-
-- (void)windowDidBecomeHidden:(NSNotification *)noti {
-    UIWindow *win = (UIWindow *)noti.object;
-    if(win){
-        UIViewController *rootVC = win.rootViewController;
-        NSArray<__kindof UIViewController *> *vcs = rootVC.childViewControllers;
-        if([vcs.firstObject isKindOfClass:NSClassFromString(@"AVPlayerViewController")]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-            });
-        }
-    }
-}
-
-- (void)beginFullScreen:(NSNotification *)noti {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-    });
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:0];
-        UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navBack"] style:UIBarButtonItemStylePlain target:self action:@selector(backBtnPressed:)];
-        [backItem setTintColor:STRGB16Color(0x453015)];
-        self.navigationItem.leftBarButtonItem = backItem;
-        
-        if (![NSString isStringNull:self.module]) {
-            if ([self.module isEqualToString:@"aimeishuo"]) {
-                UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"believe_share_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(shareAction:)];
-                [shareItem setTintColor:STRGB16Color(0x666666)];
-                self.navigationItem.rightBarButtonItem = shareItem;
-            }
-        } else {
-            NSString *title = self.navigationItem.title;
-            if ([title isEqualToString:Localized(@"Product")]) {
-                self.navigationItem.rightBarButtonItem = nil;
-                BOOL result = [[BLEService_V2 sharedInstance] isWorkingAndConnectedDevice];
-                if (result) {
-                    UIButton *deviceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-                    [deviceBtn setFrame:CGRectMake(0, 0, 23, 23)];
-                    UIImage *deviceButtonImage = [UIImage sd_animatedGIFNamed:@"deviceWorking"];
-                    if (@available(iOS 11.0, *)) {
-                        [deviceBtn.widthAnchor constraintEqualToConstant:23].active = YES;
-                        [deviceBtn.heightAnchor constraintEqualToConstant:23].active = YES;
-                        [deviceBtn setImage:deviceButtonImage forState:UIControlStateNormal];
-                        [deviceBtn setImage:deviceButtonImage forState:UIControlStateHighlighted];
-                        [deviceBtn sizeToFit];
-                    } else {
-                        // Fallback on earlier versions
-                        CGFloat btnSelImageW = deviceButtonImage.size.width * 0.5;
-                        CGFloat btnSelImageH = deviceButtonImage.size.height * 0.5;
-                        UIImage *newBtnSelImage = [deviceButtonImage resizableImageWithCapInsets:UIEdgeInsetsMake(btnSelImageH, btnSelImageW, btnSelImageH, btnSelImageW) resizingMode:UIImageResizingModeStretch];
-                        [deviceBtn setImage:newBtnSelImage forState:UIControlStateNormal];
-                        [deviceBtn setImage:newBtnSelImage forState:UIControlStateHighlighted];
-                    }
-                    [deviceBtn addTarget:self action:@selector(deviceAction:) forControlEvents:UIControlEventTouchUpInside];
-                    UIBarButtonItem *deviceButtonItem = [[UIBarButtonItem alloc] initWithCustomView:deviceBtn];
-                    self.navigationItem.rightBarButtonItem = deviceButtonItem;
-                }
-            }
-        }
-    });
-}
-
-- (void)helpAction:(UIBarButtonItem *)sender {
-    NSString *url = [NSString stringWithFormat:@"%@/pfimm-skin/skinManagerHelp",URL_FileServer];
-    [WKWebVC showWithContro:self withUrlStr:url withTitle:@"肌肤管理小助手"];
-}
-
-- (void)shareAction:(UIBarButtonItem *)sender {
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -189,16 +94,6 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-- (void)deviceAction:(UIBarButtonItem *)sender {
-    WorkingStateVC *wsvc = (WorkingStateVC *)[[UIStoryboard storyboardWithName:@"Setting" bundle:nil] instantiateViewControllerWithIdentifier:@"WorkingStateVC"];
-    wsvc.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5];
-    wsvc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    wsvc.delegate = self;
-    [self presentViewController:wsvc animated:YES completion:^{
-        
-    }];
 }
 
 - (void)bleDidDisConnect:(NSNotification *)notification {
@@ -212,7 +107,7 @@
 - (void)loadUI {
     self.view.backgroundColor = [UIColor whiteColor];
     //scrollview
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - (44 + kStatusBarHeight))];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - (44 + 22))];
     scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 100);
     scrollView.showsVerticalScrollIndicator = YES;
     self.scrollView.backgroundColor = [UIColor redColor];
@@ -220,8 +115,7 @@
     self.scrollView = scrollView;
     
     // 进度条
-    UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0.1, kScreenSizeWidth, 2)];
-    progressView.tintColor = MainStyleColor;
+    UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0.1, self.view.frame.size.width, 2)];
     progressView.trackTintColor = [UIColor whiteColor];
     [self.scrollView addSubview:progressView];
     self.progressView = progressView;
@@ -235,7 +129,7 @@
     [conf setPreferences:pref];
     [conf setAllowsInlineMediaPlayback:YES];
     
-    WKWebView *wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 2.1, kScreenSizeWidth, CGRectGetHeight(scrollView.frame) - 2.1) configuration:conf];
+    WKWebView *wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 2.1, self.view.frame.size.width, CGRectGetHeight(scrollView.frame) - 2.1) configuration:conf];
     wkWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     wkWebView.backgroundColor = [UIColor whiteColor];
     wkWebView.scrollView.backgroundColor = [UIColor whiteColor];
@@ -259,37 +153,6 @@
     
     self.bridge = [WKWebViewJavascriptBridge bridgeForWebView:self.wkWebView];
     [self.bridge setWebViewDelegate:self];
-    
-    __weak typeof(self)weakself = self;
-  
-
-    //用户没有选择过肌肤类型，h5展示选择肌肤类型   type:select(没有的时候选择)  change(更换肌肤类型)
-    [self.bridge registerHandler:@"homeToSelectSkinType" handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSString *type = [NSString string:[NSString stringWithFormat:@"%@",[data objectForKey:@"type"]] withNullStr:@"change"];
-        if ([type isEqualToString:@"select"]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                weakself.title = @"选择肌肤类型";
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSString *homeUrl = [NSString string:[NSString stringWithFormat:@"%@%@",URL_FileServer,[data objectForKey:@"url"]] withNullStr:@""];
-                [HJWebVC showWithContro:weakself withUrlStr:homeUrl withTitle:@"选择肌肤类型"];
-            });
-        }
-    }];
-
-    //通用
-    [self.bridge registerHandler:@"generalBridge" handler:^(id data, WVJBResponseCallback responseCallback) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *homeUrl = [NSString string:[NSString stringWithFormat:@"%@%@",URL_FileServer,[data objectForKey:@"url"]] withNullStr:@""];
-            NSString *title = [NSString string:[NSString stringWithFormat:@"%@",[data objectForKey:@"title"]] withNullStr:@""];
-            if([NSString isStringNull:[data objectForKey:@"type"]]) {
-                [HJWebVC showWithContro:weakself withUrlStr:homeUrl withTitle:title];
-            } else {
-                [HJWebVC showWithContro:weakself withUrlStr:homeUrl withTitle:title];
-            }
-        });
-    }];
 }
 
 #pragma mark - 返回按钮事件
@@ -298,22 +161,7 @@
     if (self.isPresent) {
         [self dismissViewControllerAnimated:YES completion:nil];
     } else {
-        NSString *title = self.navigationItem.title;
-        if ([title isEqualToString:Localized(@"Product")]) {
-            BOOL result = [[BLEService_V2 sharedInstance] isWorking];
-            if (result) {
-                [self.navigationController popViewControllerAnimated:YES];
-            } else {
-                UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                UIViewController *rootVC = [board instantiateViewControllerWithIdentifier:@"RootVC_V3"];
-                UIWindow *window = UIApplication.sharedApplication.delegate.window;
-                window.rootViewController = rootVC;
-                [UIView transitionWithView:window duration:0.4 options:UIViewAnimationOptionTransitionCrossDissolve animations:nil completion:^(BOOL finished) {
-                }];
-            }
-        } else {
-            [self.navigationController popViewControllerAnimated:YES];
-        }
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -341,7 +189,7 @@
     } else if (object == self.wkWebView.scrollView && [keyPath isEqualToString:@"contentSize"]) {
         CGSize fittingSize = [self.wkWebView sizeThatFits:CGSizeZero];
         CGFloat documentHeight = fittingSize.height;
-        self.scrollView.contentSize  = CGSizeMake(self.view.frame.size.width, documentHeight + (44 + kStatusBarHeight));
+        self.scrollView.contentSize  = CGSizeMake(self.view.frame.size.width, documentHeight + (44 + 22));
         self.wkWebView.frame = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, documentHeight);
     } else {
         
@@ -408,18 +256,18 @@
 }
 
 - (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
-    STLog(@"message:%@",message);
+    NSLog(@"message:%@",message);
     completionHandler();
 
 }
 
 - (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completionHandler {
     //    DLOG(@"msg = %@ frmae = %@",message,frame);
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:Localized(@"Hint") message:message?:@"" preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:([UIAlertAction actionWithTitle:Localized(@"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:message?:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:([UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         completionHandler(NO);
     }])];
-    [alertController addAction:([UIAlertAction actionWithTitle:Localized(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alertController addAction:([UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         completionHandler(YES);
     }])];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -430,19 +278,11 @@
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.text = defaultText;
     }];
-    [alertController addAction:([UIAlertAction actionWithTitle:Localized(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alertController addAction:([UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         completionHandler(alertController.textFields[0].text?:@"");
     }])];
     
     [self presentViewController:alertController animated:YES completion:nil];
-}
-
-#pragma mark - 点击“控制设备”
-- (void)workingToControlDevice {
-    WorkingVC *workingVC = (WorkingVC *)[[UIStoryboard storyboardWithName:@"Music" bundle:nil] instantiateViewControllerWithIdentifier:@"WorkingVC"];
-    workingVC.hidesBottomBarWhenPushed = YES;
-    workingVC.backType = @"back";
-    [self.navigationController pushViewController:workingVC animated:YES];
 }
 
 @end

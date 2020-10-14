@@ -9,7 +9,12 @@
 #import "HJTool.h"
 #import "AppDelegate.h"
 #import <sys/utsname.h>
-#import "NewVersionTipVC.h"
+#import <MBProgressHUD/MBProgressHUD.h>
+#import "SVProgressHUD.h"
+#import "AFNetworking.h"
+#import "UIWindow+SGTopVC.h"
+
+#define STRGB16Color(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @implementation HJTool
 
@@ -67,7 +72,6 @@
 }
 
 - (void)setActivity:(NSString *)message {
-    [SVProgressHUD setInfoImage:[UIImage sd_animatedGIFNamed:@"load"]];
     [SVProgressHUD setImageViewSize:CGSizeMake(50, 50)];
     [SVProgressHUD setMinimumDismissTimeInterval:20];
     [SVProgressHUD setBackgroundLayerColor:[UIColor clearColor]];
@@ -87,8 +91,8 @@
     while (topRootViewController.presentedViewController) {
         topRootViewController = topRootViewController.presentedViewController;
     }
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:Localized(@"Hint") message:message preferredStyle:  UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:Localized(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:  UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
     }]];
     [topRootViewController presentViewController:alert animated:true completion:^{
         
@@ -102,156 +106,8 @@
 }
 
 - (void)checkVersionForUpdate {
-    __weak typeof(self)weakSelf = self;
-    NSString *currentVersion = [[HJTool sharedInstance] currentVersion];
-    NSString *URL = [NSString stringWithFormat:@"https://itunes.apple.com/lookup?id=%@",APPID];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:URL]];
-    [request setHTTPMethod:@"POST"];
-    NSHTTPURLResponse *urlResponse = nil;
-    NSError *error = nil;
-    NSData *recervedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
-    NSString *str = [[NSString alloc] initWithData:recervedData encoding:NSUTF8StringEncoding];
-    str = [[HJTool sharedInstance] validJSONString:str];
-    recervedData = [str dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:recervedData options:NSJSONReadingMutableContainers error:&error];
-    if(!recervedData || error){
-        return;
-    }
-    NSNumber* cnt = [dic objectForKey:@"resultCount"];
-    //no data was obtained.
-    if([cnt integerValue] < 1){
-        return;
-    }
-    NSArray *infoArray = [dic objectForKey:@"results"];
-    NSString *lastVersion = @"";
-    if ([infoArray count]) {
-        NSDictionary *releaseInfo = [infoArray objectAtIndex:0];
-        lastVersion = [releaseInfo objectForKey:@"version"];
-        self.releaseInfo = releaseInfo;
-        self.lastVersion = lastVersion;
-        if ([lastVersion containsString:@"V"]) {
-            lastVersion = [lastVersion stringByReplacingOccurrencesOfString:@"V" withString:@""];
-        }
-        weakSelf.trackViewUrl = [releaseInfo objectForKey:@"trackViewUrl"];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults synchronize];
-        BOOL updateFlag = NO;
-        if ([lastVersion compare:currentVersion options:NSNumericSearch] == NSOrderedDescending) {
-            updateFlag = YES;
-        } else {
-            // 不需要更新
-            if ([defaults objectForKey:GetNewVersionDate]) {
-                [defaults removeObjectForKey:GetNewVersionDate];
-            }
-        }
-        
-        if (updateFlag) {
-            NSString *url = [NSString stringWithFormat:@"%@%@", URL_ServerAddress, URL_Version(lastVersion)];
-            [[HJNetWorkHandler shareInstance] startRequestMethod:GET parameters:nil url:url success:^(id responseObjectSelf) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if(![responseObjectSelf isEqual:[NSNull null]] && [[responseObjectSelf allKeys] count] > 0) {
-                        NSString *foe = [NSString string:[NSString stringWithFormat:@"%@",[responseObjectSelf objectForKey:@"force"]] withNullStr:@"0"];
-                        weakSelf.needFlag = foe;
-                        [[AppDelegate shareAppDelegate] setNeedFlag:foe];
-                        [weakSelf displayVersionUpdateBox];
-                    } else {
-                        weakSelf.needFlag = @"0";
-                        [[AppDelegate shareAppDelegate] setNeedFlag:@"0"];
-                        [weakSelf displayVersionUpdateBox];
-                    }
-                });
-            } failure:^(NSError *error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    weakSelf.needFlag = @"0";
-                    [weakSelf displayVersionUpdateBox];
-                });
-            }];
-        }
-    }
+    
 }
-
-- (void)displayVersionUpdateBox {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults synchronize];
-    NSString *currentVersionReleaseDate = [NSString stringWithFormat:@"%@",[self.releaseInfo objectForKey:@"currentVersionReleaseDate"]];
-    if (![NSString isStringNull:currentVersionReleaseDate]) {
-        currentVersionReleaseDate = [currentVersionReleaseDate stringByReplacingOccurrencesOfString:@"T" withString:@" "];
-        currentVersionReleaseDate = [currentVersionReleaseDate stringByReplacingOccurrencesOfString:@"Z" withString:@""];
-        NSDate *date = [NSDate getSGDateByString:currentVersionReleaseDate format:@"yyyy-MM-dd HH:mm:ss"];
-        NSTimeZone *zone = [NSTimeZone systemTimeZone];
-        //得到源日期与世界标准时间的偏移量
-        NSInteger interval = [zone secondsFromGMTForDate: date];
-        //返回以当前NSDate对象为基准，偏移多少秒后得到的新NSDate对象
-        NSDate *localeDate = [date dateByAddingTimeInterval: interval];
-        NSDate *nowDate = [NSDate getBeijingDate];
-        NSInteger sec = [NSDate gapBetweenOneDate:localeDate anotherDate:nowDate];
-        if (sec > 10800) {  // 检测到新版本三小时后提示更新。 10800
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSString *releaseInfoStr = [NSString string:[self.releaseInfo objectForKey:@"releaseNotes"] withNullStr:@""];
-                NSArray *array = [NSArray array];
-                if ([releaseInfoStr containsString:@";"]) {
-                    array = [releaseInfoStr componentsSeparatedByString:@";"];
-                }
-                UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                NewVersionTipVC *vc = [board instantiateViewControllerWithIdentifier:@"NewVersionTipVC"];
-                vc.array = array;
-                vc.needFlag = self.needFlag;
-                vc.lastVersion = self.lastVersion;
-                vc.upgradeBlock = ^{
-                    NSURL *url = nil;
-                    if (self.trackViewUrl == nil || [self.trackViewUrl length] == 0) {
-                        url = [NSURL URLWithString:@"https://itunes.apple.com"];
-                    } else {
-                        url = [NSURL URLWithString:self.trackViewUrl];
-                    }
-                    [[UIApplication sharedApplication]openURL:url];
-                };
-                vc.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.7];
-                vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-                UIViewController *topRootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-                [topRootViewController presentViewController:vc animated:YES completion:nil];
-            });
-        }
-        STLog(@"%@", localeDate);
-    } else {
-        NSDate *nowDate = [NSDate getBeijingDate];
-        if ([defaults objectForKey:GetNewVersionDate]) {
-            NSDate *date = [defaults objectForKey:GetNewVersionDate];
-            NSInteger sec = [NSDate gapBetweenOneDate:date anotherDate:nowDate];
-            if (sec > 10800) {  // 检测到新版本三小时后提示更新。 10800
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSString *releaseInfoStr = [NSString string:[self.releaseInfo objectForKey:@"releaseNotes"] withNullStr:@""];
-                    NSArray *array = [NSArray array];
-                    if ([releaseInfoStr containsString:@"；"]) {
-                        array = [releaseInfoStr componentsSeparatedByString:@"；"];
-                    }
-                    UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                    NewVersionTipVC *vc = [board instantiateViewControllerWithIdentifier:@"NewVersionTipVC"];
-                    vc.array = array;
-                    vc.needFlag = self.needFlag;
-                    vc.lastVersion = self.lastVersion;
-                    vc.upgradeBlock = ^{
-                        NSURL *url = nil;
-                        if (self.trackViewUrl == nil || [self.trackViewUrl length] == 0) {
-                            url = [NSURL URLWithString:@"https://itunes.apple.com"];
-                        }else{
-                            url = [NSURL URLWithString:self.trackViewUrl];
-                        }
-                        [[UIApplication sharedApplication]openURL:url];
-                    };
-                    vc.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.7];
-                    vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-                    UIViewController *topRootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-                    [topRootViewController presentViewController:vc animated:YES completion:nil];
-                });
-            }
-        } else {
-            [defaults setObject:nowDate forKey:GetNewVersionDate];
-        }
-    }
-}
-
 
 - (NSString *)validJSONString:(NSString *)json {
     NSMutableString *s = [NSMutableString stringWithString:json];

@@ -11,6 +11,8 @@
 #define ItemWidth self.frame.size.width/_titleArray.count
 #define ItemHeight self.frame.size.height
 #define NavBarColor [UIColor colorWithRed:234/255.0f green:114/255.0f blue:60/255.0f alpha:1]
+#define STRGB16Color(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#define MainStyleColor STRGB16Color(0xC3141E)
 
 @implementation SegmentView
 

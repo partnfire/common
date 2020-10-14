@@ -23,9 +23,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.delegate = self;
-    // 隐藏导航栏黑线
-    [UINavigationBar appearance].shadowImage = [UIImage imageWithColor:[UIColor clearColor] size:CGSizeMake(kScreenSizeWidth, 1)];
-    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor] size:CGSizeMake(kScreenSizeWidth, 1)] forBarMetrics:(UIBarMetricsDefault)];
 }
 
 - (void)backItemAction:(UIBarButtonItem *)sender {
@@ -34,7 +31,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navBack"] style:UIBarButtonItemStylePlain target:self action:@selector(backItemAction:)];
-    [backItem setTintColor:STRGB16Color(0x666666)];
+    [backItem setTintColor:[UIColor blackColor]];
     viewController.navigationItem.leftBarButtonItem = backItem;
 }
 

@@ -37,9 +37,6 @@
         //        if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         //            self.navigationController.interactivePopGestureRecognizer.enabled = NO;
         //        }
-        if ([SVProgressHUD isVisible]) {
-            [[HJTool sharedInstance] dismissActivity];
-        }
     });
 }
 

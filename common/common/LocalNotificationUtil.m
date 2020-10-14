@@ -7,6 +7,10 @@
 //
 
 #import "LocalNotificationUtil.h"
+#import "HJTool.h"
+#import "AppDelegate.h"
+#import "NSString+Tool.h"
+#import "UIWindow+SGTopVC.h"
 
 #define LOCAL_NOTIFY_SCHEDULE_ID @"localscheduleNotify"
 
@@ -29,14 +33,9 @@
     }
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([[UIApplication sharedApplication] currentUserNotificationSettings].types == UIUserNotificationTypeNone) {
-        STLog(@"没有打开通知权限");
-        [defaults setObject:@"NO" forKey:kNoticeFlag];
-        [defaults synchronize];
-        [[AppDelegate shareAppDelegate].timer setFireDate:[NSDate date]];
+        NSLog(@"没有打开通知权限");
         return;
     }
-    [[AppDelegate shareAppDelegate].timer setFireDate:[NSDate distantFuture]];
-    [defaults setObject:@"YES" forKey:kNoticeFlag];
     [defaults synchronize];
     if (@available(iOS 10.0, *)) {
         UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
@@ -125,7 +124,7 @@
         //    ln.alertTitle = @"通知标题";
         //repeatInterval
     } else {
-        [[HJTool sharedInstance] setHud:Localized(@"iOS8.0") toView:[self currentView]];
+        [[HJTool sharedInstance] setHud:@"当前iPhone系统不支持该功能，请将系统升级到8.0及以上" toView:[self currentView]];
     }
 }
          
@@ -141,9 +140,9 @@
         center.delegate = self;
         [center requestAuthorizationWithOptions:UNAuthorizationOptionBadge|UNAuthorizationOptionSound|UNAuthorizationOptionAlert completionHandler:^(BOOL granted, NSError * _Nullable error) {
             if (granted) {
-                STLog(@"注册通知成功");
+                NSLog(@"注册通知成功");
             } else {
-                STLog(@"注册通知失败");
+                NSLog(@"注册通知失败");
             }
         }];
     } else if (@available(iOS 8.0, *)) {
