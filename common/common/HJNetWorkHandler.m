@@ -10,6 +10,7 @@
 #import <CocoaSecurity/CocoaSecurity.h>
 #import "NSDate+SGTimeHandle.h"
 #import "NSString+Tool.h"
+#import "AFNetworking.h"
 
 #define WEAKSELF  __weak typeof(self) weakSelf = self;
 
@@ -29,8 +30,7 @@
                 parameters:(id)parameters
                        url:(NSString *)url
                    success:(void (^)(id responseObject))success
-                   failure:(void (^)(NSError *error))failure
-{
+                   failure:(void (^)(NSError *error))failure {
     AFHTTPSessionManager *managers = [AFHTTPSessionManager manager];
     managers.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
     managers.requestSerializer.timeoutInterval = 30.0f;
@@ -61,13 +61,13 @@
     switch (method) {
         //POST 方法
         case POST:{
-            [managers POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+            [managers POST:url parameters:parameters headers:nil progress:^(NSProgress * _Nonnull uploadProgress) {
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 if (success) {
                     success(responseObject);
                 }
-                [weakmanagers invalidateSessionCancelingTasks:YES];
+                [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 if (failure) {
                     NSError *e =  nil;
@@ -106,19 +106,19 @@
                 } else {
                     [weakSelf requestFailed:error];
                 }
-                [weakmanagers invalidateSessionCancelingTasks:YES];
+                [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
             }];
         }
             break;
         //GET 方法
         case GET:{
-            [managers GET:url parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+            [managers GET:url parameters:parameters headers:nil progress:^(NSProgress * _Nonnull downloadProgress) {
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 if (success) {
                     success(responseObject);
                 }
-                [weakmanagers invalidateSessionCancelingTasks:YES];
+                [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 if (failure) {
                     NSError *e =  nil;
@@ -154,17 +154,17 @@
                 } else {
                     [weakSelf requestFailed:error];
                 }
-                [weakmanagers invalidateSessionCancelingTasks:YES];
+                [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
             }];
         }
             break;
         //PUT 方法
         case PUT:{
-            [managers PUT:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [managers PUT:url parameters:parameters headers:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 if (success) {
                     success(responseObject);
                 }
-                [weakmanagers invalidateSessionCancelingTasks:YES];
+                [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 if (failure) {
                     NSError *e =  nil;
@@ -203,18 +203,18 @@
                 } else {
                     [weakSelf requestFailed:error];
                 }
-                [weakmanagers invalidateSessionCancelingTasks:YES];
+                [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
             }];
         }
             break;
         //DELETE 方法
         case DELETE:{
             managers.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithObjects:@"GET", @"HEAD", nil];
-            [managers DELETE:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [managers DELETE:url parameters:parameters headers:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 if (success) {
                     success(responseObject);
                 }
-                [weakmanagers invalidateSessionCancelingTasks:YES];
+                [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 if (failure) {
                     NSError *e =  nil;
@@ -250,7 +250,7 @@
                 } else {
                     [weakSelf requestFailed:error];
                 }
-                [weakmanagers invalidateSessionCancelingTasks:YES];
+                [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
             }];
         }
             break;
@@ -267,15 +267,17 @@
     url = [NSString stringWithFormat:@"%@%@",@"",url];
     WEAKSELF
     __weak typeof(AFHTTPSessionManager *) weakmanagers = managers;
-    [managers POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    [managers POST:url parameters:nil headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSData *imgData = UIImageJPEGRepresentation(parameters,0.3);
         [formData appendPartWithFileData:imgData name:@"image"
                                 fileName:@"img.jpg" mimeType:@"image/jpeg"];
-    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (success) {
             success(responseObject);
         }
-        [weakmanagers invalidateSessionCancelingTasks:YES];
+        [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failure) {
             NSError *e =  nil;
@@ -312,7 +314,7 @@
         }else{
             [weakSelf requestFailed:error];
         }
-        [weakmanagers invalidateSessionCancelingTasks:YES];
+        [weakmanagers invalidateSessionCancelingTasks:YES resetSession:YES];
     }];
 }
 

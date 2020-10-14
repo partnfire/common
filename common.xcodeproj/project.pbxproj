@@ -37,6 +37,7 @@
 		7A0365DC253579BC008A324B /* NSDate+SGTimeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365C0253579BB008A324B /* NSDate+SGTimeHandle.m */; };
 		7A0365DE253579BC008A324B /* UIImage+ChangeSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365C2253579BB008A324B /* UIImage+ChangeSize.m */; };
 		7A0365DF253579BC008A324B /* HJValid.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365C3253579BC008A324B /* HJValid.m */; };
+		7A0365E32536E314008A324B /* PFCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365E22536E314008A324B /* PFCommon.m */; };
 		891EA6605C8D152A251D00EB /* Pods_common_commonUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6D943B43D27870B511EBC4B /* Pods_common_commonUITests.framework */; };
 		A8C05A816A83D1D572260EC3 /* Pods_commonTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0C7AFC3B83F7D525AE24621 /* Pods_commonTests.framework */; };
 		D5CD82D2C4E478F77B0F9635 /* Pods_common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A44EBEA65628E5DD70C599 /* Pods_common.framework */; };
@@ -122,7 +123,8 @@
 		7A0365C6253579BC008A324B /* UIWindow+SGTopVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SGTopVC.h"; sourceTree = "<group>"; };
 		7A0365C7253579BC008A324B /* GetLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetLocation.h; sourceTree = "<group>"; };
 		7A0365C8253579BC008A324B /* BaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
-		7A0365E02536CAB9008A324B /* PFCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PFCommon.h; sourceTree = "<group>"; };
+		7A0365E12536E314008A324B /* PFCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PFCommon.h; sourceTree = "<group>"; };
+		7A0365E22536E314008A324B /* PFCommon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PFCommon.m; sourceTree = "<group>"; };
 		98606C7CE99F3C21786A143E /* Pods-common-commonUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-common-commonUITests.debug.xcconfig"; path = "Target Support Files/Pods-common-commonUITests/Pods-common-commonUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9DE24E57A14D18A5DAD45144 /* Pods-common.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-common.debug.xcconfig"; path = "Target Support Files/Pods-common/Pods-common.debug.xcconfig"; sourceTree = "<group>"; };
 		B6D943B43D27870B511EBC4B /* Pods_common_commonUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_common_commonUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -287,7 +289,8 @@
 				7A0365AB253579BA008A324B /* UIWindow+SGTopVC.m */,
 				7A0365BE253579BB008A324B /* WKWebVC.h */,
 				7A0365BF253579BB008A324B /* WKWebVC.m */,
-				7A0365E02536CAB9008A324B /* PFCommon.h */,
+				7A0365E12536E314008A324B /* PFCommon.h */,
+				7A0365E22536E314008A324B /* PFCommon.m */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -532,6 +535,7 @@
 			files = (
 				7A0365C9253579BC008A324B /* IDGenerate.m in Sources */,
 				7A0365D9253579BC008A324B /* SegmentView.m in Sources */,
+				7A0365E32536E314008A324B /* PFCommon.m in Sources */,
 				7A0365D1253579BC008A324B /* GetLocation.m in Sources */,
 				7A03656D253576C9008A324B /* ViewController.m in Sources */,
 				7A036567253576C9008A324B /* AppDelegate.m in Sources */,

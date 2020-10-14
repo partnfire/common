@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AFNetworking.h"
 
 @interface HJNetWorkHandler : NSObject
 
@@ -21,12 +20,10 @@ typedef NS_ENUM(NSUInteger, RequestMethod) {
 
 //错误状态码 iOS-sdk里面的 NSURLError.h 文件
 typedef NS_ENUM (NSInteger, AFNetworkErrorType) {
-    
     AFNetworkErrorType_TimedOut = NSURLErrorTimedOut,                               //-1001 请求超时
     AFNetworkErrorType_UnURL = NSURLErrorUnsupportedURL,                            //-1002 不支持的url
     AFNetworkErrorType_NoNetwork = NSURLErrorNotConnectedToInternet,                //-1009 断网
     AFNetworkErrorType_404Failed = NSURLErrorBadServerResponse,                     //-1011 404错误
-    
     AFNetworkErrorType_3840Failed = 3840,                                           //请求或返回不是纯Json格式
 };
 

@@ -6,10 +6,12 @@
 //  Copyright © 2020 partnfire. All rights reserved.
 //
 
-#ifndef PFCommon_h
-#define PFCommon_h
+#import <Foundation/Foundation.h>
 
-#import "HJTool.h"
+NS_ASSUME_NONNULL_BEGIN
 
+@interface PFCommon : NSObject
 
-#endif /* PFCommon_h */
+@end
+
+NS_ASSUME_NONNULL_END
