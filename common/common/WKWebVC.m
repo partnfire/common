@@ -31,7 +31,7 @@
 @implementation WKWebVC
 
 + (void)showWithContro:(UIViewController *)contro withUrlStr:(NSString *)urlStr withTitle:(NSString *)title {
-    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     WKWebVC *webContro = [WKWebVC new];
     webContro.homeUrl = [NSURL URLWithString:urlStr];
     webContro.navigationItem.title = title;
@@ -41,7 +41,7 @@
 }
 
 + (void)showWithContro:(UIViewController *)contro withUrlStr:(NSString *)urlStr withTitle:(NSString *)title withType:(NSString *)type {
-    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     WKWebVC *webContro = [WKWebVC new];
     webContro.homeUrl = [NSURL URLWithString:urlStr];
     webContro.type = type;
@@ -52,7 +52,7 @@
 }
 
 + (void)showWithContro:(UIViewController *)contro withUrlStr:(NSString *)urlStr withTitle:(NSString *)title withModule:(NSString *)module withInfo:(NSDictionary *)info {
-    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     WKWebVC *webContro = [WKWebVC new];
     webContro.homeUrl = [NSURL URLWithString:urlStr];
     webContro.module = module;
@@ -65,7 +65,7 @@
 
 //** 传入控制器、url、标题 */
 + (void)presentWithContro:(UIViewController *)contro withUrlStr:(NSString *)urlStr withTitle:(NSString *)title {
-    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     WKWebVC *webContro = [WKWebVC new];
     webContro.homeUrl = [NSURL URLWithString:urlStr];
     webContro.hidesBottomBarWhenPushed = YES;
