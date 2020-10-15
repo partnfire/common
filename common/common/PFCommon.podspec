@@ -16,17 +16,17 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "PFCommon"
-  spec.version      = "1.0.2"
-  spec.summary      = "Copyright © 2020 partnfire. All rights reserved."
+  spec.version      = "1.0.5"
+  spec.summary      = "partnfire common"
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  spec.description  = "partnfire common.Copyright © 2020 partnfire. All rights reserved."
+  spec.description  = "partnfire common. partnfire All rights reserved."
 
-  spec.homepage     = "http://www.partnfire.com"
+  spec.homepage     = "https://github.com/partnfire/common"
 
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
@@ -129,7 +129,7 @@ Pod::Spec.new do |spec|
   #  where they will only apply to your library. If you depend on other Podspecs
   #  you can include multiple dependencies to ensure it works.
 
-  # spec.requires_arc = true
+  spec.requires_arc = true
 
   # spec.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   spec.dependency "AFNetworking", "~> 4.0.1"
