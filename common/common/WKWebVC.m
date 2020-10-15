@@ -9,10 +9,7 @@
 #import "WKWebVC.h"
 #import <WebKit/WebKit.h>
 #import "UIImage+ChangeSize.h"
-#import "WebViewJavascriptBridge.h"
-#import "WKWebViewJavascriptBridge.h"
 #import "UIImage+ChangeSize.h"
-#import "HJWebVC.h"
 #import "BaseNavigationController.h"
 
 @interface WKWebVC ()<UIActionSheetDelegate,WKNavigationDelegate, WKUIDelegate>
@@ -22,7 +19,6 @@
 @property (assign, nonatomic) NSUInteger loadCount;
 @property (strong, nonatomic) UIProgressView *progressView;
 @property (nonatomic, strong) NSString *titleStr;
-@property WKWebViewJavascriptBridge *bridge;
 
 @property (nonatomic, assign) BOOL isPresent;
 
@@ -150,9 +146,6 @@
                                                        timeoutInterval:15.0];
     [wkWebView loadRequest:request];
     self.wkWebView = wkWebView;
-    
-    self.bridge = [WKWebViewJavascriptBridge bridgeForWebView:self.wkWebView];
-    [self.bridge setWebViewDelegate:self];
 }
 
 #pragma mark - 返回按钮事件
@@ -168,10 +161,6 @@
 #pragma mark - wkWebView代理
 // 如果不添加这个，那么wkwebview跳转不了AppStore
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    WebViewJavascriptBridgeBase *base = [[WebViewJavascriptBridgeBase alloc] init];
-    if ([base isWebViewJavascriptBridgeURL:navigationAction.request.URL]) {
-        return;
-    }
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 
@@ -182,7 +171,7 @@
         if (newprogress == 1) {
             self.progressView.hidden = YES;
             [self.progressView setProgress:0 animated:NO];
-        }else {
+        } else {
             self.progressView.hidden = NO;
             [self.progressView setProgress:newprogress animated:YES];
         }

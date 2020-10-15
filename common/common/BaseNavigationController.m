@@ -7,7 +7,6 @@
 //
 
 #import "BaseNavigationController.h"
-#import "AppDelegate.h"
 #import "UIImage+ChangeSize.h"
 #import "NSDate+SGTimeHandle.h"
 #define iOS10 ([[UIDevice currentDevice].systemVersion intValue]>=10?YES:NO)

@@ -11,7 +11,6 @@
 #import "HJTool.h"
 #import "HJValid.h"
 #import "NSString+Tool.h"
-#import "HJNetWorkHandler.h"
 
 @implementation PFCommon
 

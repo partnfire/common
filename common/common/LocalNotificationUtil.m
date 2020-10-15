@@ -8,7 +8,6 @@
 
 #import "LocalNotificationUtil.h"
 #import "HJTool.h"
-#import "AppDelegate.h"
 #import "NSString+Tool.h"
 #import "UIWindow+SGTopVC.h"
 

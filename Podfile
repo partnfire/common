@@ -8,7 +8,6 @@ target 'common' do
   pod 'AFNetworking'
   pod 'CocoaSecurity'
   pod 'MBProgressHUD'
-  pod 'WebViewJavascriptBridge'
   pod 'SDWebImage'
   pod 'SVProgressHUD'
 

@@ -16,10 +16,8 @@
 		7A036582253576CD008A324B /* commonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A036581253576CD008A324B /* commonTests.m */; };
 		7A03658D253576CD008A324B /* commonUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A03658C253576CD008A324B /* commonUITests.m */; };
 		7A0365C9253579BC008A324B /* IDGenerate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A03659C253579BA008A324B /* IDGenerate.m */; };
-		7A0365CA253579BC008A324B /* HJNetWorkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365A1253579BA008A324B /* HJNetWorkHandler.m */; };
 		7A0365CB253579BC008A324B /* LocalNotificationUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365A2253579BA008A324B /* LocalNotificationUtil.m */; };
 		7A0365CC253579BC008A324B /* HJTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365A3253579BA008A324B /* HJTool.m */; };
-		7A0365CD253579BC008A324B /* HJWebVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365A6253579BA008A324B /* HJWebVC.m */; };
 		7A0365CE253579BC008A324B /* HJCustomTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365A7253579BA008A324B /* HJCustomTextField.m */; };
 		7A0365CF253579BC008A324B /* UIWindow+SGTopVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365AB253579BA008A324B /* UIWindow+SGTopVC.m */; };
 		7A0365D0253579BC008A324B /* BaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0365AD253579BA008A324B /* BaseVC.m */; };
@@ -83,12 +81,9 @@
 		7A03659D253579BA008A324B /* HJValid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJValid.h; sourceTree = "<group>"; };
 		7A03659E253579BA008A324B /* NSString+Tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Tool.h"; sourceTree = "<group>"; };
 		7A0365A0253579BA008A324B /* LocalNotificationUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotificationUtil.h; sourceTree = "<group>"; };
-		7A0365A1253579BA008A324B /* HJNetWorkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJNetWorkHandler.m; sourceTree = "<group>"; };
 		7A0365A2253579BA008A324B /* LocalNotificationUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalNotificationUtil.m; sourceTree = "<group>"; };
 		7A0365A3253579BA008A324B /* HJTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJTool.m; sourceTree = "<group>"; };
 		7A0365A4253579BA008A324B /* GetPinYinFromChinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetPinYinFromChinese.h; sourceTree = "<group>"; };
-		7A0365A5253579BA008A324B /* HJWebVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJWebVC.h; sourceTree = "<group>"; };
-		7A0365A6253579BA008A324B /* HJWebVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJWebVC.m; sourceTree = "<group>"; };
 		7A0365A7253579BA008A324B /* HJCustomTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJCustomTextField.m; sourceTree = "<group>"; };
 		7A0365A8253579BA008A324B /* SegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentView.h; sourceTree = "<group>"; };
 		7A0365A9253579BA008A324B /* SQPrintJsonLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQPrintJsonLog.h; sourceTree = "<group>"; };
@@ -102,7 +97,6 @@
 		7A0365B1253579BB008A324B /* HJSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJSegmentedControl.h; sourceTree = "<group>"; };
 		7A0365B2253579BB008A324B /* HJSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJSegmentedControl.m; sourceTree = "<group>"; };
 		7A0365B3253579BB008A324B /* KeyChainManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyChainManager.h; sourceTree = "<group>"; };
-		7A0365B6253579BB008A324B /* HJNetWorkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJNetWorkHandler.h; sourceTree = "<group>"; };
 		7A0365B7253579BB008A324B /* KeyChainManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyChainManager.m; sourceTree = "<group>"; };
 		7A0365B8253579BB008A324B /* NSString+Tool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Tool.m"; sourceTree = "<group>"; };
 		7A0365B9253579BB008A324B /* SQPrintJsonLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQPrintJsonLog.m; sourceTree = "<group>"; };
@@ -252,16 +246,12 @@
 				7A0365BA253579BB008A324B /* GetPinYinFromChinese.m */,
 				7A0365AE253579BA008A324B /* HJCustomTextField.h */,
 				7A0365A7253579BA008A324B /* HJCustomTextField.m */,
-				7A0365B6253579BB008A324B /* HJNetWorkHandler.h */,
-				7A0365A1253579BA008A324B /* HJNetWorkHandler.m */,
 				7A0365B1253579BB008A324B /* HJSegmentedControl.h */,
 				7A0365B2253579BB008A324B /* HJSegmentedControl.m */,
 				7A0365AC253579BA008A324B /* HJTool.h */,
 				7A0365A3253579BA008A324B /* HJTool.m */,
 				7A03659D253579BA008A324B /* HJValid.h */,
 				7A0365C3253579BC008A324B /* HJValid.m */,
-				7A0365A5253579BA008A324B /* HJWebVC.h */,
-				7A0365A6253579BA008A324B /* HJWebVC.m */,
 				7A03659B253579BA008A324B /* IDGenerate.h */,
 				7A03659C253579BA008A324B /* IDGenerate.m */,
 				7A0365B3253579BB008A324B /* KeyChainManager.h */,
@@ -549,9 +539,7 @@
 				7A0365D5253579BC008A324B /* KeyChainManager.m in Sources */,
 				7A0365D7253579BC008A324B /* SQPrintJsonLog.m in Sources */,
 				7A0365D6253579BC008A324B /* NSString+Tool.m in Sources */,
-				7A0365CD253579BC008A324B /* HJWebVC.m in Sources */,
 				7A0365CB253579BC008A324B /* LocalNotificationUtil.m in Sources */,
-				7A0365CA253579BC008A324B /* HJNetWorkHandler.m in Sources */,
 				7A0365D3253579BC008A324B /* HJSegmentedControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

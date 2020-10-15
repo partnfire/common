@@ -9,6 +9,7 @@
 #import "GetPinYinFromChinese.h"
 
 @implementation GetPinYinFromChinese
+
 + (NSString *)getChinesePinYin:(NSString *)chinese {
     // 转换成可变字符串
     // 传进来“于艳平”

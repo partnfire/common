@@ -19,4 +19,5 @@
 + (NSString *)getChinesePinYin:(NSString *)chinese;
 
 + (NSString *)getChineseFirstPinYin:(NSString *)chinese;
+
 @end

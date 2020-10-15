@@ -7,7 +7,6 @@
 //
 
 #import "HJTool.h"
-#import "AppDelegate.h"
 #import <sys/utsname.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "SVProgressHUD.h"

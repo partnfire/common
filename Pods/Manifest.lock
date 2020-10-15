@@ -20,7 +20,6 @@ PODS:
     - SDWebImage/Core (= 5.9.3)
   - SDWebImage/Core (5.9.3)
   - SVProgressHUD (2.2.5)
-  - WebViewJavascriptBridge (6.0.3)
 
 DEPENDENCIES:
   - AFNetworking
@@ -28,7 +27,6 @@ DEPENDENCIES:
   - MBProgressHUD
   - SDWebImage
   - SVProgressHUD
-  - WebViewJavascriptBridge
 
 SPEC REPOS:
   trunk:
@@ -37,7 +35,6 @@ SPEC REPOS:
     - MBProgressHUD
     - SDWebImage
     - SVProgressHUD
-    - WebViewJavascriptBridge
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
@@ -45,8 +42,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   SDWebImage: a31ee8e90a97303529e03fb0c333eae0eacb88e9
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  WebViewJavascriptBridge: 7f5bc4d3581e672e8f32bd0f812d54bc69bb8e29
 
-PODFILE CHECKSUM: c7140c2fd3f088e9286306a73ea874f0afdce38c
+PODFILE CHECKSUM: e1fa73bc1e6241d525c87565bddf1ac1c2587995
 
 COCOAPODS: 1.9.3
