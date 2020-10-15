@@ -129,7 +129,12 @@
 }
          
 - (UIView *)currentView {
-    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *rootViewController;
+    if (@available(iOS 13.0, *)) {
+        rootViewController = [UIApplication sharedApplication].windows[0].rootViewController;
+    } else {
+        rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    }
     UIViewController *currentVC = [UIWindow getVisibleViewControllerFrom:rootViewController];
     return currentVC.view;
 }
