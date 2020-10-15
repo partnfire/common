@@ -29,7 +29,7 @@
 
 //** 传入控制器、url、标题 */
 + (void)showWithContro:(UIViewController *)contro withUrlStr:(NSString *)urlStr withTitle:(NSString *)title {
-    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    urlStr = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     HJWebVC *webContro = [HJWebVC new];
     webContro.homeUrl = [NSURL URLWithString:urlStr];
     webContro.navigationItem.title = title;
