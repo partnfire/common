@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "PFCommon"
-  spec.version      = "1.0.8"
+  spec.version      = "1.0.9"
   spec.summary      = "partnfire common"
 
   # This description is used to generate tags and improve search results.
@@ -52,7 +52,7 @@ Pod::Spec.new do |spec|
   #  profile URL.
   #
 
-  spec.author             = { "partnfire" => "service@partnfire.com" }
+  spec.author             = { "partnfire" => "partnfire_hhj@yeah.net" }
   # Or just: spec.author    = "partnfire"
   # spec.authors            = { "partnfire" => "service@partnfire.com" }
   # spec.social_media_url   = "http://www.partnfire.com"
@@ -90,7 +90,7 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "*.{h,m}"
+  spec.source_files  = "common/*.{h,m}"
   # spec.exclude_files = "Classes/Exclude"
 
   # spec.public_header_files = "Classes/**/*.h"
@@ -135,7 +135,6 @@ Pod::Spec.new do |spec|
   spec.dependency "AFNetworking", "~> 4.0.1"
   spec.dependency "CocoaSecurity", "~> 1.2.4"
   spec.dependency "MBProgressHUD", "~> 1.2.0"
-  spec.dependency "WebViewJavascriptBridge", "~> 6.0.3"
   spec.dependency "SDWebImage", "~> 5.9.3"
   spec.dependency "SVProgressHUD", "~> 2.2.5"
 
